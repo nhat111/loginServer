@@ -14,9 +14,10 @@ public class SignupForm {
 	
 
 	@Size(min = 3,max = 20)
+        @Pattern(regexp="^[a-zA-Z0-9_]+$")
 	private String userName;
 
-	@Size(min = 8)
+	@Pattern(regexp = "(?=.*?[~`!@#$%^&*()-+]).{8,}")
 	private String password;
 	
 	@NonNull

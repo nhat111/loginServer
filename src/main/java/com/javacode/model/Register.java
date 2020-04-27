@@ -23,13 +23,13 @@ public class Register {
 	private int id;
 
 	@Column(name = "user_name")
-	//@NotBlank
 	 @NonNull
 	@Size(min = 3, max = 20)
+        @Pattern(regexp="^[a-zA-Z0-9_]+$")
 	private String userName;
 
 	@Column(name = "password")
-	@Size(min = 8)
+	@Pattern(regexp = "(?=.*?[~`!@#$%^&*()-+]).{8,}")
 	private String password;
 
 	@Column(name = "first_name")

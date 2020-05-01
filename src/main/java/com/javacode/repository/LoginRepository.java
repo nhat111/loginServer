@@ -8,13 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.javacode.model.Login;
 
 @Repository
-public interface LoginRepository extends JpaRepository<Login, Integer>{
-	
+public interface LoginRepository extends JpaRepository<Login, Long> {
+
+	Optional<Login> findByUserName(String username);
+
+	boolean existsByUserName(String userName);
+
 	Login findUserByUserName(String userName);
-	
-	Boolean existsByUserName(String userName);
-	
-	Optional<Login> findByUserName(String userName);
-	
 
 }

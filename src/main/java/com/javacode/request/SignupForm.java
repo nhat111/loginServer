@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.lang.NonNull;
@@ -14,7 +15,7 @@ public class SignupForm {
 	
 
 	@Size(min = 3,max = 20)
-        @Pattern(regexp="^[a-zA-Z0-9_]+$")
+	@Pattern(regexp="^[a-zA-Z0-9_]+$")
 	private String userName;
 
 	@Pattern(regexp = "(?=.*?[~`!@#$%^&*()-+]).{8,}")

@@ -51,15 +51,16 @@ public class UserController {
 			return new ResponseEntity<>(new MessagerResponse("user exists"), HttpStatus.BAD_REQUEST);
 		}
 
-		Register user = new Register(signupRequesr.getUserName(), signupRequesr.getPassword(),
+		Register userRegister = new Register(signupRequesr.getUserName(), signupRequesr.getPassword(),
 				signupRequesr.getFirstName(), signupRequesr.getLastName(), signupRequesr.getBirthDay(),
 			signupRequesr.getGender(), signupRequesr.getAddress());
+		
 
-		Login userLogin = new Login(signupRequesr.getUserName(), signupRequesr.getPassword());
-
-		registerRepository.save(user);
-
-		loginRepository.save(userLogin);
+		Login login = new Login(signupRequesr.getUserName(),signupRequesr.getPassword());
+		
+		userRegister.setLogin(login);
+		
+		registerRepository.save(userRegister);
 
 		return new ResponseEntity<>(new MessagerResponse("register success"), HttpStatus.OK);
 	}
@@ -72,14 +73,14 @@ public class UserController {
 
 		}
 
-		Login user = loginRepository.findUserByUserName(signinRequest.getUserName());
+		Login userLogin = loginRepository.findUserByUserName(signinRequest.getUserName());
 
-		String pass = user.getPassword();
+		String pass = userLogin.getPassword();
 
 		if (signinRequest.getPassword().equals(pass)) {
 
 			isLogin = true;
-			userNameLogin = user.getUserName();
+			userNameLogin = userLogin.getUserName();
 
 			return new ResponseEntity<>(new MessagerResponse("login success"), HttpStatus.OK);
 
@@ -92,10 +93,10 @@ public class UserController {
 
 	@GetMapping("/userlogin")
 	public ResponseEntity<?> getUserInfo(){
-
 		if (isLogin) {
 			Register user = registerRepository.findByUserName(userNameLogin);
 			return ResponseEntity.ok().body(user);// return Object
+		
 		}
 
 		return new ResponseEntity<>(new MessagerResponse("user not login"), HttpStatus.BAD_REQUEST);

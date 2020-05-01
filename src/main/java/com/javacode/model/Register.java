@@ -2,15 +2,20 @@ package com.javacode.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.lang.NonNull;
@@ -20,15 +25,16 @@ import org.springframework.lang.NonNull;
 public class Register {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	@Column(name = "user_name")
-	 @NonNull
+	@NonNull
 	@Size(min = 3, max = 20)
-        @Pattern(regexp="^[a-zA-Z0-9_]+$")
+	@Pattern(regexp = "^[a-zA-Z0-9_]+$")
 	private String userName;
 
 	@Column(name = "password")
+	@Size(min = 8)
 	@Pattern(regexp = "(?=.*?[~`!@#$%^&*()-+]).{8,}")
 	private String password;
 
@@ -51,6 +57,10 @@ public class Register {
 	@Column(name = "address")
 	private String address;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "login_id")
+	private Login login;
+
 	public Register(String userName, String password, String firstName, String lastName, Date birthDay, Gender gender,
 			String address) {
 		this.userName = userName;
@@ -58,6 +68,7 @@ public class Register {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDay = birthDay;
+		this.gender = gender;
 		this.address = address;
 	}
 
@@ -69,9 +80,7 @@ public class Register {
 	public Register() {
 	}
 
-	
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -83,7 +92,7 @@ public class Register {
 		return password;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -119,7 +128,6 @@ public class Register {
 		this.birthDay = birthDay;
 	}
 
-
 	public Gender getGender() {
 		return gender;
 	}
@@ -134,6 +142,20 @@ public class Register {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	/**
+	 * @return the login
+	 */
+	public Login getLogin() {
+		return login;
+	}
+
+	/**
+	 * @param login the login to set
+	 */
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 
 }
